@@ -1,18 +1,26 @@
+---
+output: github_document
+---
+
+
 
 # PhaseX.2 Quality Control R package
 
-The goal of PhaseX.2QCpackage is to perform Quality Control on data
-generated for 4CE phase 1.2 and phase 2.2
+The goal of PhaseX.2QCpackage is to perform Quality Control on data generated for 4CE phase 1.2 and  phase 2.2
+
 
 ## Installation
 
-``` r
+
+```{r, eval=FALSE}
 devtools::install_github("https://github.com/covidclinical/Phase1.2QualityControlRPackage", upgrade=FALSE)
+
 ```
 
-## Running QC
 
-``` r
+## Running QC
+```{r, eval=FALSE}
+
 ### enter input path, output path and site name
 dir.input1.2 = ""   # path that contains phase 1.2 data
 dir.input2.2 = ""   # path that contains phase 2.2 data, write NA if 2.2 data is not available
@@ -23,3 +31,4 @@ site.nm = ""     # 4CE site ID
 ### run QC
 runQC(dir.input1.2, dir.input2.2, dir.output, site.nm)
 ```
+

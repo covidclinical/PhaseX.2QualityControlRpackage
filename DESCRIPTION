@@ -1,0 +1,16 @@
+Package: PhaseX.2QualityControlRpackage
+Title: Generate the QC report for 4CE Phase 1.2 and Phase 2.2 data
+Version: 0.1.0
+Authors@R: 
+    person(given = "Clara-Lea",
+           family = "Bonzel",
+           role = c("aut", "cre"),
+           email = "clbonzel@hsph.harvard.edu")
+Description: This package generates the QC report for 4CE Phase 1.2 and Phase 2.2 files created at the site. Among other things, it reports possible inconsistensies between the files or possible lab units issues, as well as missing data.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Depends: 
+    R (>= 2.10)
+Imports: dplyr, data.table, stats, utils
