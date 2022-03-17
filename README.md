@@ -7,7 +7,7 @@ generated for 4CE phase 1.2 and phase 2.2
 ## Installation
 
 ``` r
-devtools::install_github("https://github.com/covidclinical/Phase1.2QualityControlRPackage", upgrade=FALSE)
+devtools::install_github("https://github.com/covidclinical/PhaseX.2QualityControlRPackage", upgrade=FALSE)
 ```
 
 ## Running QC
