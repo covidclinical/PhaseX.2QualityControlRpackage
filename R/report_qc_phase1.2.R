@@ -1,11 +1,6 @@
 sink.txt=function(x, file, method=print, append){sink(file, append=append); method(x); sink()}
-#' Run QC
-#' @param dir.input path that contains phase 1.2 data
-#' @param dir.output path to save the QC report
-#' @param site.nm 4CE site ID (string)
-#' @return QC file
+
 #' @importFrom utils read.csv
-#' @export
 runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
   ### read the data
   dat.DailyCounts=read.csv(paste0(dir.input,"/DailyCounts-",site.nm,".csv"))
