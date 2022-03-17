@@ -1,13 +1,13 @@
 #' @import data.table
 #' @import dplyr
 runQC_tab_diag <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, phase1.DiagProcMed, output.dir) {
-  print("Checking Phase2.2 Diagnoses")
+  #print("Checking Phase2.2 Diagnoses")
   res=tab_compare_diag(phase2.Observations, phase2.ClinicalCourse, phase1.DiagProcMed)
   nm.duplicated=res[duplicated(res[,"diag-icd"]),c("diag-icd")]
   tryCatch(sink.txt("4. Diagnoses\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
   tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
   if(length(nm.duplicated)!=0){
-    print(paste0("Duplicated rows for: ", nm.duplicated))
+    #print(paste0("Duplicated rows for: ", nm.duplicated))
     tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)
     }
@@ -34,7 +34,7 @@ runQC_tab_diag <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations,
       colnames(res.print)=c("icd", "phase1", "phase2", "phase2.rangeL", "phase2.rangeU")
       tryCatch(sink.txt(paste0("Diagnosis codes with different ", nm, " between Phase1.2 and Phase2.2:\n"), file=file.nm2, cat, append=T), error=function(e) NA)
 
-      print(res.print)
+      #print(res.print)
       tryCatch(sink.txt(paste(apply(res.print,1, function(ll) paste(paste0(colnames(res.print), "=", ll),collapse="; ")), collapse="\n"), file=file.nm2, cat, append=T), error=function(e) NA)
     }else{sink.txt("no issue identified", file=file.nm2, cat, append=T)}
     sink.txt("\n\n", file=file.nm2, cat, append=T)

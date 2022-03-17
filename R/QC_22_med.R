@@ -1,7 +1,7 @@
 #' @import data.table
 #' @import dplyr
 runQC_tab_med <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, phase1.DiagProcMed, output.dir) {
-  print("Checking Phase2.2 Medications ...")
+  #print("Checking Phase2.2 Medications ...")
   junk=tab_compare_med(phase2.Observations, phase2.ClinicalCourse, phase1.DiagProcMed)
   res=junk$res
 
@@ -38,8 +38,8 @@ runQC_tab_med <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, 
     if(length(id.issue)!=0){
       res.print=data.frame(res[id.issue,c("medclass", nm1, nm2)], range.LB[id.issue], range.UB[id.issue])
       colnames(res.print)=c("medclass", "phase1", "phase2", "phase2.rangeL", "phase2.rangeU")
-      print(paste0("Medication class with different ", nm, " between Phase1.2 and Phase2.2: "))
-      print(res.print)
+      #print(paste0("Medication class with different ", nm, " between Phase1.2 and Phase2.2: "))
+      #print(res.print)
       tryCatch(sink.txt(paste(apply(res.print,1, function(ll) paste(paste0(colnames(res.print), "=", ll),collapse="; ")), collapse="\n"), file=file.nm2, cat, append=T), error=function(e) NA)
     }else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)

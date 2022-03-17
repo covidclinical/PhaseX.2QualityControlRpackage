@@ -9,10 +9,9 @@
 #' @export
 runQC <- function(dir.input1.2, dir.input2.2=NA, dir.output, site.nm){
 
-  x=dir.input1.2
   # QC for Phase1.2
-  # print("Generating Phase 1.2 QC report ...")
-  # runQC_Phase1.2_report(dir.input1.2, dir.output, site.nm)
+  print("Generating Phase 1.2 QC report ...")
+  runQC_Phase1.2_report(dir.input1.2, dir.output, site.nm)
 
   # QC for Phase2.2
   if(is.na(dir.input2.2)==FALSE){
