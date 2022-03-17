@@ -4,7 +4,7 @@
 runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
 
   output.dir = dir.output
-  file.nm2=paste0(dir.output, "/Phase2.2DataQCReport.", site.nm,".txt")
+  file.nm2=paste0(dir.output, "/QC_report_phase2.2_", site.nm,".txt")
 
   phase1.DailyCounts=read.csv(paste0(dir.input1.2,"/DailyCounts-",site.nm,".csv"))
   phase1.ClinicalCourse=read.csv(paste0(dir.input1.2,"/ClinicalCourse-",site.nm,".csv"))
@@ -49,7 +49,7 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
   }
 
   cohort.cat = c('PosAdm','U071Adm','NegAdm','PosNotAdm','U071NotAdm','NegNotAdm')
-  quarter.cat = c('2020Q1','2020Q2','2020Q3','2020Q4','2021Q1','2021Q2')
+  quarter.cat = c('2020Q1','2020Q2','2020Q3','2020Q4','2021Q1','2021Q2', '2021Q3', '2021Q4', '2022Q1', '2022Q2')
   cohort.list.all = NULL
   for (c.cat in cohort.cat){
     for(q.cat in quarter.cat){

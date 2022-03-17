@@ -1,14 +1,14 @@
 #' @import data.table
 #' @import dplyr
 runQC_tab_lab <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, phase1.Labs, output.dir) {
-  print("Checking Phase2.2 Labs ...")
+  #print("Checking Phase2.2 Labs ...")
   junk=tab_compare_lab(myday=0, phase2.ClinicalCourse, phase2.Observations, phase1.Labs)
   res=junk$res
   nm.duplicated=res[duplicated(res[,"labname"]),c("labname")]
   tryCatch(sink.txt("\n\n2. Labs\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
   tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
   if(length(nm.duplicated)!=0){
-    print(paste0("Checking duplicated rows:", paste(nm.duplicated,collapse=";")))
+    #print(paste0("Checking duplicated rows:", paste(nm.duplicated,collapse=";")))
     tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)
     }
@@ -29,8 +29,6 @@ runQC_tab_lab <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, 
       res.print=data.frame(res[id.issue,c("labname",nm1, nm2)], range.LB[id.issue], range.UB[id.issue])
       colnames(res.print)=c("labname", "phase1", "phase2", "phase2.rangeL", "phase2.rangeU")
       rownames(res.print)=NULL
-      print(paste0("The following labs have different ", nm, " between Phase1.2 and Phase2.2: "))
-      print(res.print)
       tryCatch(sink.txt(paste(apply(res.print,1, function(ll) paste0(paste(paste0(colnames(res.print), "=", ll),collapse="; "),
                                                                      "\n")),collapse=""), file=file.nm2, cat, append=T), error=function(e) NA)
     }else{

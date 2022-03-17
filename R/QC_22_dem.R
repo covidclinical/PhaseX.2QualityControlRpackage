@@ -1,14 +1,14 @@
 #' @import data.table
 #' @import dplyr
 runQC_tab_dem <- function(file.nm2, phase2.Summary, phase2.Observations, phase1.AgeSex, output.dir) {
-  print("Checking Phase2.2 Demographics ...")
+  #print("Checking Phase2.2 Demographics ...")
   res=tab_compare_dem(phase2.Summary, phase2.Observations, phase1.AgeSex)
   nm.duplicated=res[duplicated(res[,c("sex", "age_group")]),c(c("sex", "age_group"))]
   tryCatch(sink.txt("5. Demographics\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
   tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
   if(dim(nm.duplicated)[1]!=0){
     nm.duplicated=unlist(lapply(1:dim(nm.duplicated)[1], function(ll) paste(paste0(colnames(nm.duplicated),"=",nm.duplicated[ll,]),collapse=":")))
-    print(paste0("Duplicated rows for:", paste(nm.duplicated, collapse=';')))
+    #print(paste0("Duplicated rows for:", paste(nm.duplicated, collapse=';')))
     tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)
     }

@@ -1,13 +1,12 @@
 #' @import data.table
 #' @import dplyr
 runQC_tab_cc <- function(file.nm2, phase2.ClinicalCourse, phase1.ClinicalCourse, output.dir) {
-  print("Checking Phase2.2 ClinicalCourse ...")
+  #print("Checking Phase2.2 ClinicalCourse ...")
   res=tab_compare_cc(phase2.ClinicalCourse, phase1.ClinicalCourse)
   nm.duplicated=res[duplicated(res[,"days_since_admission"]),c("days_since_admission")]
   tryCatch(sink.txt("6. ClinicalCourse\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
   tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
   if(length(nm.duplicated)!=0){
-    print(paste0("Duplicated rows for: ", paste(nm.duplicated,collapse=";")))
     tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)
     }
@@ -29,7 +28,7 @@ runQC_tab_cc <- function(file.nm2, phase2.ClinicalCourse, phase1.ClinicalCourse,
     if(nm.day0!=0){
       res.print=res[res$days_since_admission==0, c(nm1, nm2)]
       colnames(res.print)=c("phase1", "phase2")
-      print(res.print)
+      #print(res.print)
       tryCatch(sink.txt(paste(apply(res.print,1, function(ll) paste0(paste(paste0(colnames(res.print), "=", ll),collapse="; "), "\n\n")), collapse=""), file=file.nm2, cat, append=T), error=function(e) NA)}else{
         sink.txt("no issue identified\n", file=file.nm2, cat, append=T)
       }
