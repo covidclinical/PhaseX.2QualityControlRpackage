@@ -18,7 +18,7 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
   phase2.ClinicalCourse=read.csv(paste0(dir.input2.2, "/LocalPatientClinicalCourse.csv"))
   phase2.Observations=read.csv(paste0(dir.input2.2, "/LocalPatientObservations.csv"))
   phase2.Summary=read.csv(paste0(dir.input2.2, "/LocalPatientSummary.csv"))
-  phase2.Race=read.csv(paste0(dir.input2.2, "/LocalPatientRace.csv"))
+  phase2.Race=tryCatch(read.csv(paste0(dir.input2.2, "/LocalPatientRace.csv")), error=function(e) NA)
 
   colnames(phase1.DailyCounts)=tolower(colnames(phase1.DailyCounts))
   colnames(phase1.ClinicalCourse)=tolower(colnames(phase1.ClinicalCourse))
@@ -63,8 +63,11 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
 
   sink.txt("Missing cohorts:\n",file=file.nm2, cat, append=T)
   cohort.miss = setdiff(cohort.list.all, cohort.all)
-  if (is.null(cohort.miss)){sink.txt("no cohort missing\n",file=file.nm2, cat, append=T)}else{
+  if (is.null(cohort.miss)){sink.txt("no cohort missing",file=file.nm2, cat, append=T)}else{
     sink.txt(cohort.miss, file=file.nm2, cat, append=T)
+  }
+  if (is.na(phase2.Race)==TRUE){
+    sink.txt("\n\nThe file LocalPatientRace.csv is missing",file=file.nm2, cat, append=T)
   }
   sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm2, cat, append=T)
 

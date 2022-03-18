@@ -6,13 +6,13 @@ runQC_tab_lab <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, 
   res=junk$res
   nm.duplicated=res[duplicated(res[,"labname"]),c("labname")]
   tryCatch(sink.txt("\n\n2. Labs\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
-  tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
-  if(length(nm.duplicated)!=0){
-    #print(paste0("Checking duplicated rows:", paste(nm.duplicated,collapse=";")))
-    tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{
-      sink.txt("no issue identified", file=file.nm2, cat, append=T)
-    }
-  sink.txt("\n\n", file=file.nm2, cat, append=T)
+  # tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
+  # if(length(nm.duplicated)!=0){
+  #   #print(paste0("Checking duplicated rows:", paste(nm.duplicated,collapse=";")))
+  #   tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{
+  #     sink.txt("no issue identified", file=file.nm2, cat, append=T)
+  #   }
+  # sink.txt("\n\n", file=file.nm2, cat, append=T)
 
   nm.labname=NULL
   tryCatch(sink.txt(paste0("Checking differences between Phase1.2 and Phase2.2:\n\n"), file=file.nm2, cat, append=T), error=function(e) NA)
