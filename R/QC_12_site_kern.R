@@ -220,6 +220,3 @@ err_report_crossover_site=function(dat.ClinicalCourse, dat.AgeSex, dat.DailyCoun
 
 
 
-
-
-

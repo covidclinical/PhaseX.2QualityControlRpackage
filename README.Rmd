@@ -23,7 +23,7 @@ devtools::install_github("https://github.com/covidclinical/PhaseX.2QualityContro
 ### enter input path, output path and site name
 dir.input1.2 = ""   # path that contains phase 1.2 data
 dir.input2.2 = ""   # path that contains phase 2.2 data, write NA if 2.2 data is not available
-dir.output = ""  # path to save the 1.2 QC report
+dir.output = ""  # path to save the QC reports
 site.nm = ""     # 4CE site ID
 
 

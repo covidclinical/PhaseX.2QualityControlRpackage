@@ -52,8 +52,20 @@ err_report_colnames_site.phase2=function(phase2.ClinicalCourse, phase2.Observati
 
 
 
+############ frequency of the codes
+#' @import dplyr
+run_qc_tab_frequency.phase2=function(file.nm2,phase2.Observations, phase1.AgeSex, output.dir){
+  dat.keep = phase2.Observations %>% filter(!concept_type %in% c('DIAG-ICD10', 'DIAG-ICD9'))
+  dat.count.pat = dat.keep %>% group_by(concept_type, concept_code) %>% count(patient_num)
+  dat.count = dat.count.pat%>% group_by(concept_type) %>% count(concept_code)
+  n.tot = phase1.AgeSex.c[which(age_group=="all" & sex=="all"), pts_all]
+  dat.count$n = round(dat.count$n/n.tot,2)
 
-
+  tryCatch(sink.txt("\n\n7. Code frequencies\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
+  tryCatch(sink.txt(noquote(as.matrix(dat.count)), file=file.nm2, cat, append=T), error=function(e) NA)
+  res = noquote(as.matrix(dat.count))
+  res
+}
 
 
 

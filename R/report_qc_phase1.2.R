@@ -14,7 +14,7 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
 
   print(site.nm)
 
-  file.nm1 = paste0(dir.output, "/QC_report_phase1.2_", site.nm,".txt")
+  file.nm1 = paste0(dir.output, "/QC_report_phase1.2_", site.nm,Sys.Date(),".txt")
 
   race.list.all = c('asian','black','no_information','other','white','american_indian','hawaiian_pacific_islander')
   cohort.cat = c('PosAdm','U071Adm','NegAdm','PosNotAdm','U071NotAdm','NegNotAdm')
@@ -56,7 +56,7 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
 
     print(as.character(cohort.nm))
 
-    tryCatch(sink.txt(paste0('Cohort : ', cohort.nm), file=file.nm1, cat, append=T), error=function(e) NA)
+    tryCatch(sink.txt(paste0('Cohort: ', cohort.nm), file=file.nm1, cat, append=T), error=function(e) NA)
 
     qc.res=qc_site(dat.DailyCounts.c, dat.ClinicalCourse.c, dat.AgeSex.c, dat.DiagProcMed.c,
                    dat.Labs.c, dat.RaceByLocalCode.c, dat.RaceBy4CECode.c, dat.LabCodes,

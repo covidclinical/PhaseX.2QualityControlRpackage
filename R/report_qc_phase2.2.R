@@ -4,7 +4,7 @@
 runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
 
   output.dir = dir.output
-  file.nm2=paste0(dir.output, "/QC_report_phase2.2_", site.nm,".txt")
+  file.nm2=paste0(dir.output, "/QC_report_phase2.2_", site.nm,Sys.Date(),".txt")
 
   phase1.DailyCounts=read.csv(paste0(dir.input1.2,"/DailyCounts-",site.nm,".csv"))
   phase1.ClinicalCourse=read.csv(paste0(dir.input1.2,"/ClinicalCourse-",site.nm,".csv"))
@@ -84,7 +84,7 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
     phase2.ClinicalCourse.c=phase2.ClinicalCourse%>%filter(cohort==as.character(cohort.nm))
     phase2.Observations.c=phase2.Observations%>%filter(cohort==as.character(cohort.nm))
     phase2.Summary.c=phase2.Summary%>%filter(cohort==as.character(cohort.nm))
-    phase2.Race.c=phase2.Race%>%filter(cohort==as.character(cohort.nm))
+    phase2.Race.c=tryCatch(phase2.Race%>%filter(cohort==as.character(cohort.nm)), error=function(e) NA)
 
     print(as.character(cohort.nm))
 
@@ -111,6 +111,7 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, site.nm){
     #sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
     #sink.txt(paste0("________________________________________________\n"), file=file.nm2, cat, append=T)
 
+    Phase2QC_Tab_frequency=run_qc_tab_frequency.phase2(file.nm2,phase2.Observations, phase1.AgeSex, output.dir)
     sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm2, cat, append=T)
     #Phase2QC_Tab_Labs+Phase2QC_Tab_Medications+Phase2QC_Tab_Diagnoses+Phase2QC_Tab_Demographic+Phase2QC_Tab_ClinicalCourse
 
