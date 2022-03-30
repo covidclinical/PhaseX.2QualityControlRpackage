@@ -6,6 +6,9 @@ err_report_dailycounts_site=function(dat.DailyCounts,site.nm){
     c("cumulative_pts_all is not largest in last date",
       "cumulative_pts_severe is not largest in last date",
       "cumulative_pts_dead is not largest in last date",
+      "cumulative_pts_severe_dead is not largest in last date",
+      "cumulative_pts_icu is not largest in last date",
+      "cumulative_pts_severe_icu is not largest in last date",
       "cumulative_pts_all < cumulative_pts_severe",
       "cumulative_pts_icu < cumulative_pts_severe_icu",
       "cumulative_pts_dead < cumulative_pts_severe_dead",
@@ -26,11 +29,20 @@ err_report_dailycounts_site=function(dat.DailyCounts,site.nm){
     # check that cumulative_pts_all is the largest at last date
     err=dim(dat.site)[1]%in%which(dat.site[,"cumulative_pts_all"]==max(dat.site[,"cumulative_pts_all"]))!=1
 
-    # check that cumulative_pts_all is the largest at last date
+    # check that cumulative_pts_severe is the largest at last date
     err=c(err, dim(dat.site)[1]%in%which(dat.site[,"cumulative_pts_severe"]==max(dat.site[,"cumulative_pts_severe"]))!=1)
 
     # check that cumulative_pts_dead is the largest at last date
     err=c(err, dim(dat.site)[1]%in%which(dat.site[,"cumulative_pts_dead"]==max(dat.site[,"cumulative_pts_dead"]))!=1)
+
+    # check that cumulative_pts_dead is the largest at last date
+    err=c(err, dim(dat.site)[1]%in%which(dat.site[,"cumulative_pts_severe_dead"]==max(dat.site[,"cumulative_pts_severe_dead"]))!=1)
+
+    # check that cumulative_pts_icu is the largest at last date
+    err=c(err, dim(dat.site)[1]%in%which(dat.site[,"cumulative_pts_icu"]==max(dat.site[,"cumulative_pts_icu"]))!=1)
+
+    # check that cumulative_pts_severe_icu is the largest at last date
+    err=c(err, dim(dat.site)[1]%in%which(dat.site[,"cumulative_pts_severe_icu"]==max(dat.site[,"cumulative_pts_severe_icu"]))!=1)
 
     # check that cumulative_pts_all > cumulative_pts_severe
     id.nomiss=which(dat.site[,"cumulative_pts_all"]>0 & dat.site[,"cumulative_pts_severe"]>0)

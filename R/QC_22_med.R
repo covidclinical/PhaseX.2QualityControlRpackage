@@ -37,11 +37,16 @@ runQC_tab_med <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, 
     tryCatch(sink.txt(paste0("Medication class with different ", nm, " between Phase1.2 and Phase2.2:\n"), file=file.nm2, cat, append=T), error=function(e) NA)
     if(length(id.issue)!=0){
       res.print=data.frame(res[id.issue,c("medclass", nm1, nm2)], range.LB[id.issue], range.UB[id.issue])
-      colnames(res.print)=c("medclass", "phase1", "phase2", "phase2.rangeL", "phase2.rangeU")
+      colnames(res.print)=c("medclass", "Phase1.2", "Phase2.2", "Phase2.2.rangeL", "Phase2.2.rangeU")
       #print(paste0("Medication class with different ", nm, " between Phase1.2 and Phase2.2: "))
       #print(res.print)
-      tryCatch(sink.txt(paste(apply(res.print,1, function(ll) paste(paste0(colnames(res.print), "=", ll),collapse="; ")), collapse="\n"), file=file.nm2, cat, append=T), error=function(e) NA)
-    }else{
+      max.print <- getOption('max.print')
+      options(max.print=nrow(res.print) * ncol(res.print))
+      sink(file=file.nm2, append=T)
+      print(noquote(as.matrix(res.print)))
+      options(max.print=max.print)
+      sink()
+          }else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)
     }
     sink.txt("\n\n", file=file.nm2, cat, append=T)

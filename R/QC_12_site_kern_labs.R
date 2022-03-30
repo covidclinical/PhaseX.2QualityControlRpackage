@@ -7,8 +7,7 @@ err_report_lab_site=function(dat.Labs, dat.AgeSex, site.nm){
     "N_all < N_ever_severe",
     "negative N (not -999 or -99)",
     "day 0+ not included",
-    "Inf, -Inf, NA, Nan",
-    "Less than 33% of all patients have the important labs")
+    "Inf, -Inf, NA, Nan")
 
   err = NULL
   dat.site=dat.Labs
@@ -29,25 +28,44 @@ err_report_lab_site=function(dat.Labs, dat.AgeSex, site.nm){
   # Inf, -Inf, NA, Nan
   err5=any(dat.site%in%c(Inf, -Inf, NA, NaN))
 
-  # Less than 33% of all patients have the main labs
-  lab.want = data.frame(loinc=c('1988-5','2276-4','3255-7','33959-8','8066-5','8066-7','2160-0'))
-  lab.have = data.frame(loinc=unique(dat.site[,'loinc']))
 
-  pat.thresh = floor(0.33*as.numeric(dat.AgeSex %>% filter(age_group=='all', sex=='all') %>% select(pts_all)))
-  total.pat = dat.site%>%group_by(loinc)%>%
-    filter(loinc%in%lab.want$loinc)%>%
-    slice(which.max(pts_all))%>%
-    select(loinc,pts_all)
-  err6=length(total.pat%>%filter(pts_all<pat.thresh)%>%select(loinc))>0
 
-  err=c(err2, err3, err4, err5, err6)
+
+  err=c(err2, err3, err4, err5)
   report=data.frame(site.nm, label=err.label, err)
 
   err.report=report[report[,"err"]==TRUE, c("site.nm", "label")]
   list(err.report=err.report, err.label=err.label)
 }
+##########################
+######### Less than 33% of all patients have the main labs
+##########################
+err_report_lab_prev = function(dat.Labs, dat.AgeSex, site.nm) {
+  dat.site=dat.Labs
+  lab.want = data.frame(loinc = c(
+    '1988-5',
+    '2276-4',
+    '3255-7',
+    '33959-8',
+    '48066-5',
+    '48066-7',
+    '2160-0'
+  ))
+  lab.have = data.frame(loinc = unique(dat.site[, 'loinc']))
 
+  pat.thresh = floor(0.33 * as.numeric(
+    dat.AgeSex %>% filter(age_group == 'all', sex == 'all') %>% select(pts_all)
+  ))
+  total.pat = dat.site %>% group_by(loinc) %>%
+    filter(loinc %in% lab.want$loinc) %>%
+    slice(which.max(pts_all)) %>%
+    select(loinc, pts_all)
+  err.report = total.pat %>% filter(pts_all < pat.thresh) %>% select(loinc)
+  "Less than 33% of all patients have some of the important labs"
 
+  if(is.null(err.report)==TRUE){err.report="No issue identified"}else{err.report=data.frame("labs"=err.report)}
+  list(err.report=err.report)
+}
 
 ##########################
 ##########  Missing Labs
@@ -57,7 +75,7 @@ err_report_lab_miss=function(dat.Labs, site.nm){
   dat.site=dat.Labs
   # Some important labs are missing
   # CRP(1988-5), ferritin(2276-4), fibrinogen(3255-7), procalcitonin(33959-8), D-dimer(48066-5,48066-7), creatinine(2160-0)
-  lab.want = data.frame(loinc=c('1988-5','2276-4','3255-7','33959-8','8066-5','8066-7','2160-0'))
+  lab.want = data.frame(loinc=c('1988-5','2276-4','3255-7','33959-8','48066-5','48066-7','2160-0'))
   lab.have = data.frame(loinc=unique(dat.site[,'loinc']))
 
   err.report=lab.want[which(!lab.want$loinc %in% lab.have$loinc),'loinc']
