@@ -1,8 +1,9 @@
 
 sink.txt=function(x, file, method=print, append){sink(file, append=append); method(x); sink()}
 
+#' @import dplyr
 err_report_colnames_site.phase2=function(phase2.ClinicalCourse, phase2.Observations, phase2.Summary, phase2.Race, site.nm){
-
+  phase2.Race = NA
   if (is.na(phase2.Race)==FALSE){
     file.nms=
       c("phase2.ClinicalCourse",
@@ -74,17 +75,9 @@ run_qc_tab_frequency.phase2=function(file.nm2, phase2.Observations, phase1.AgeSe
   colnames(dat.count) = c("concept_type", "concept_code", "AllCohorts", "AllCohorts.p")
   dat.count.all = left_join(dat.count,
                             dat.count.cat.w,
-                            by = c('concept_type', 'concept_code'))
+                            by = c('concept_type', 'concept_code'), fill=0)
   tryCatch(
-    sink.txt(
-      paste0("\n\nCode frequencies (patient) across all cohorts\n\n"),
-      file = file.nm2,
-      cat,
-      append = T
-    ),
-    error = function(e)
-      NA
-  )
+    sink.txt(paste0("\n\nCode frequencies (patient) across all cohorts\n\n"),file = file.nm2,cat,append = T),error = function(e)NA)
   # tryCatch(sink.txt(paste(apply(dat.count.all, 1, function(ll) paste(paste0(ll), collapse=" ")), collapse="\n"), file=file.nm2, cat, append=T), error=function(e) NA)
   max.print <- getOption('max.print')
   options(max.print = nrow(dat.count.all) * ncol(dat.count.all))
@@ -92,8 +85,24 @@ run_qc_tab_frequency.phase2=function(file.nm2, phase2.Observations, phase1.AgeSe
   print(noquote(as.matrix(dat.count.all)))
   options(max.print = max.print)
   sink()
-  #res = noquote(as.matrix(dat.count))
-  #res
+
+  sink.txt("\n\n", file=file.nm2, cat, append=T)
+  tryCatch(sink.txt(paste0("Missing concept codes:\n\n"), file=file.nm2, cat, append=T), error=function(e) NA)
+  dat.count.all = data.frame(dat.count.all)
+  all.codes.dict$V2 =gsub(" ", "", all.codes.dict$V2, fixed = TRUE)
+  codes.miss = all.codes.dict %>% filter(!V2 %in% dat.count.all$concept_code)
+  colnames(codes.miss)= c("concept_type", "concept_code")
+  id.issue = as.vector(codes.miss$concept_code)
+    if(length(id.issue)!=0){
+      max.print <- getOption('max.print')
+      options(max.print=nrow(codes.miss) * ncol(codes.miss))
+      sink(file=file.nm2, append=T)
+      print(noquote(as.matrix(codes.miss)))
+      options(max.print=max.print)
+      sink()
+
+    }
+
 }
 
 ############ frequency of the codes

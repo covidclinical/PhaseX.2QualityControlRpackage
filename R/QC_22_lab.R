@@ -35,6 +35,7 @@ runQC_tab_lab <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, 
     nm.labname=c(nm.labname, res[id.issue,"labname"])
     sink.txt("\n", file=file.nm2, cat, append=T)
   }
+
   is.error=length(c(nm.labname,nm.duplicated))!=0
   is.error
 }

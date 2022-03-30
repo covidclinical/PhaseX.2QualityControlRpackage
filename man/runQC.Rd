@@ -4,7 +4,13 @@
 \alias{runQC}
 \title{Conducts QC for Phase2 Data and Generates QC Reports}
 \usage{
-runQC(dir.input1.2, dir.input2.2 = NA, dir.output, site.nm)
+runQC(
+  dir.input1.2,
+  dir.input2.2 = NA,
+  dir.output,
+  select.all.cohorts = F,
+  site.nm
+)
 }
 \arguments{
 \item{dir.input1.2}{path that contains phase 1.2 data}
@@ -12,6 +18,8 @@ runQC(dir.input1.2, dir.input2.2 = NA, dir.output, site.nm)
 \item{dir.input2.2}{path that contains phase 2.2 data, NA if 2.2 data is not available}
 
 \item{dir.output}{path to save the QC report}
+
+\item{select.all.cohorts}{equal to TRUE to display a summary report for all cohorts. FALSE by default, we display a report for 3 cohorts randomly sampled.}
 
 \item{site.nm}{4CE site ID (string)}
 }
