@@ -87,6 +87,7 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, select.al
 
   if (select.all.cohorts == T){set.cohort = cohort.all}else{set.cohort = cohort.sample}
   for (cohort.nm in set.cohort){
+    print(cohort.nm)
     phase1.DailyCounts.c=phase1.DailyCounts%>%filter(cohort==as.character(cohort.nm))
     phase1.ClinicalCourse.c=phase1.ClinicalCourse%>%filter(cohort==as.character(cohort.nm))
     phase1.AgeSex.c=phase1.AgeSex%>%filter(cohort==as.character(cohort.nm))

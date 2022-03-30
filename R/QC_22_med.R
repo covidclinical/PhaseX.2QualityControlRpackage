@@ -45,6 +45,7 @@ runQC_tab_med <- function(file.nm2, phase2.ClinicalCourse, phase2.Observations, 
       sink(file=file.nm2, append=T)
       print(noquote(as.matrix(res.print)))
       options(max.print=max.print)
+      sink()
           }else{
       sink.txt("no issue identified", file=file.nm2, cat, append=T)
     }
