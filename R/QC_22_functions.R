@@ -1,3 +1,4 @@
+
 sink.txt=function(x, file, method=print, append){sink(file, append=append); method(x); sink()}
 
 err_report_colnames_site.phase2=function(phase2.ClinicalCourse, phase2.Observations, phase2.Summary, phase2.Race, site.nm){
@@ -54,19 +55,36 @@ err_report_colnames_site.phase2=function(phase2.ClinicalCourse, phase2.Observati
 
 ############ frequency of the codes
 #' @import dplyr
-run_qc_tab_frequency.phase2=function(file.nm2,phase2.Observations, phase1.AgeSex, output.dir){
+#' @import tidyr
+run_qc_tab_frequency.phase2=function(file.nm2, phase2.Observations, phase1.AgeSex, select.all.cohorts=T, output.dir){
   dat.keep = phase2.Observations %>% filter(!concept_type %in% c('DIAG-ICD10', 'DIAG-ICD9'))
-  dat.count.pat = dat.keep %>% group_by(concept_type, concept_code) %>% count(patient_num)
+  dat.keep$cohort.cat = sub("20.*", "", dat.keep$cohort)
+  dat.count.pat = dat.keep %>% group_by(concept_type, concept_code, cohort.cat) %>% count(patient_num)
   dat.count = dat.count.pat%>% group_by(concept_type) %>% count(concept_code)
-  n.tot = phase1.AgeSex.c[which(age_group=="all" & sex=="all"), pts_all]
-  dat.count$n = round(dat.count$n/n.tot,2)
-
-  tryCatch(sink.txt("\n\n7. Code frequencies\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
-  tryCatch(sink.txt(noquote(as.matrix(dat.count)), file=file.nm2, cat, append=T), error=function(e) NA)
-  res = noquote(as.matrix(dat.count))
-  res
+    #Add per cohort category
+  if(isTRUE(select.all.cohorts)){
+    dat.count.cat = dat.count.pat%>% group_by(concept_type, cohort.cat) %>% count(concept_code)
+    dat.count.cat.w = spread(dat.count.cat, key=cohort.cat, value=n, fill=0)
+    n.tot = sum(phase1.AgeSex[which(phase1.AgeSex$age_group=='all' & phase1.AgeSex$sex=='all'), 'pts_all'])
+    dat.count$n.proportion = round(dat.count$n/n.tot, 2)
+    colnames(dat.count) = c("concept_type", "concept_code", "AllCohorts", "AllCohorts.p")
+    dat.count.all = left_join(dat.count, dat.count.cat.w, by = c('concept_type', 'concept_code'))
+    tryCatch(sink.txt(paste0("\n\nCode frequencies (patient) across all cohorts\n\n"), file=file.nm2, cat, append=T), error=function(e) NA)
+    # tryCatch(sink.txt(paste(apply(dat.count.all, 1, function(ll) paste(paste0(ll), collapse=" ")), collapse="\n"), file=file.nm2, cat, append=T), error=function(e) NA)
+  }
+  max.print <- getOption('max.print')
+  options(max.print=nrow(dat.count.all) * ncol(dat.count.all))
+  sink(file=file.nm2, append=T)
+  print(noquote(as.matrix(dat.count.all)))
+  options(max.print=max.print)
+  #res = noquote(as.matrix(dat.count))
+  #res
 }
 
+############ frequency of the codes
+run_qc_na.phase2=function(phase2.ClinicalCourse, phase2.Observations, phase2.Summary, output.dir){
+  x.na = which(is.na(phase2.ClinicalCourse) | is.infinite(rowSums(phase2.ClinicalCourse[,c(3,5:8)])))
+}
 
 
 

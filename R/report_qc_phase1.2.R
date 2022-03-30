@@ -1,7 +1,8 @@
 sink.txt=function(x, file, method=print, append){sink(file, append=append); method(x); sink()}
 
 #' @importFrom utils read.csv
-runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
+runQC_Phase1.2_report=function(dir.input, dir.output, select.all.cohorts=F, site.nm){
+  set.seed(1234)
   ### read the data
   dat.DailyCounts=read.csv(paste0(dir.input,"/DailyCounts-",site.nm,".csv"))
   dat.ClinicalCourse=read.csv(paste0(dir.input,"/ClinicalCourse-",site.nm,".csv"))
@@ -14,7 +15,7 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
 
   print(site.nm)
 
-  file.nm1 = paste0(dir.output, "/QC_report_phase1.2_", site.nm,Sys.Date(),".txt")
+  file.nm1 = paste0(dir.output, "/QC_report_phase1.2_", site.nm, "_",Sys.Date(),".txt")
 
   race.list.all = c('asian','black','no_information','other','white','american_indian','hawaiian_pacific_islander')
   cohort.cat = c('PosAdm','U071Adm','NegAdm','PosNotAdm','U071NotAdm','NegNotAdm')
@@ -32,6 +33,10 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
                                       unique(dat.Labs$cohort),
                                       unique(dat.RaceByLocalCode$cohort),
                                       unique(dat.RaceBy4CECode$cohort)))
+  cohort.all.PosAdm = cohort.all[which(substr(cohort.all,1,6)=='NegAdm')]
+  cohort.all.rest = cohort.all[which(substr(cohort.all,1,6)!='NegAdm')]
+
+  cohort.sample = tryCatch(c(sample(x=cohort.all.PosAdm, size =1), sample(x=cohort.all.rest, size=2, replace=F)), error=function(e) NA)
 
   sink.txt("\n\n", file=file.nm1, cat, append=T)
   tryCatch(sink.txt(paste0("\n\nPhase1.2 QC Report ",site.nm, "\n"), file=file.nm1, cat, append=F), error=function(e) NA)
@@ -45,7 +50,8 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
   }
   sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm1, cat, append=T)
 
-  for (cohort.nm in cohort.all){
+  if (select.all.cohorts == T){set.cohort = cohort.all}else{set.cohort = cohort.sample}
+  for (cohort.nm in set.cohort){
     dat.DailyCounts.c=dat.DailyCounts%>%filter(cohort==as.character(cohort.nm))
     dat.ClinicalCourse.c=dat.ClinicalCourse%>%filter(cohort==as.character(cohort.nm))
     dat.AgeSex.c=dat.AgeSex%>%filter(cohort==as.character(cohort.nm))
@@ -73,6 +79,7 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
       colnames(qc.res$qc.dpm$err.report)=
       colnames(qc.res$qc.lab$err.report)=
       colnames(qc.res$qc.lab.val$err.report)=
+      #colnames(qc.res$qc.lab.prev$err.report)=
       colnames(qc.res$qc.rc$err.report)=
       #colnames(qc.res$qc.rc.mis$err.report)=
       c("SiteID", "Possible Issues")
@@ -120,6 +127,10 @@ runQC_Phase1.2_report=function(dir.input, dir.output, site.nm){
       }
     tryCatch(sink.txt("\n\nLabs missing:\n", file=file.nm1, cat, append=T))
     tryCatch(sink.txt(as.data.frame(qc.res$qc.lab.mis$err.report), file=file.nm1, print, append=T), error=function(e) NA)
+
+    tryCatch(sink.txt("\n\nLess than 33% of all patients have some of the important labs:\n", file=file.nm1, cat, append=T))
+    tryCatch(sink.txt(as.data.frame(qc.res$qc.lab.prev$err.report), file=file.nm1, print, append=T), error=function(e) NA)
+
     tryCatch(sink.txt("\n\nLab units:\n",file=file.nm1, cat, append=T))
     if(dim(qc.res$qc.lab.val$err.report)[1]!=0 ){
       tryCatch(sink.txt(as.data.frame(qc.res$qc.lab.val$err.report), file=file.nm1, print, append=T), error=function(e) NA)}else{

@@ -24,6 +24,7 @@ qc_site=function(dat.DailyCounts, dat.ClinicalCourse, dat.AgeSex, dat.DiagProcMe
   # qc_site_kern_labs
   qc.lab = err_report_lab_site(dat.Labs, dat.AgeSex, site.nm)
   qc.lab.mis = err_report_lab_miss(dat.Labs, site.nm)
+  qc.lab.prev = err_report_lab_prev(dat.Labs, dat.AgeSex, site.nm)
   qc.lab.val = err_report_lab_unit_site(dat.Labs, site.nm)
   # qc_site_kern_race
   qc.rc = err_report_race_site(dat.RaceBy4CECode, dat.RaceByLocalCode, site.nm)
@@ -39,6 +40,7 @@ qc_site=function(dat.DailyCounts, dat.ClinicalCourse, dat.AgeSex, dat.DiagProcMe
        qc.dpm=qc.dpm,
        qc.lab=qc.lab,
        qc.lab.mis=qc.lab.mis,
+       qc.lab.prev=qc.lab.prev,
        qc.lab.val=qc.lab.val,
        qc.rc=qc.rc
        #qc.rc.mis=qc.rc.mis
