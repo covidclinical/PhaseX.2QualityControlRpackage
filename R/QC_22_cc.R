@@ -4,7 +4,7 @@ runQC_tab_cc <- function(file.nm2, phase2.ClinicalCourse, phase1.ClinicalCourse,
   #print("Checking Phase2.2 ClinicalCourse ...")
   res=tab_compare_cc(phase2.ClinicalCourse, phase1.ClinicalCourse)
   nm.duplicated=res[duplicated(res[,"days_since_admission"]),c("days_since_admission")]
-  tryCatch(sink.txt("6. ClinicalCourse\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
+  tryCatch(sink.txt("5. ClinicalCourse\n\n", file=file.nm2, cat, append=T), error=function(e) NA)
   tryCatch(sink.txt("Checking duplicated rows:\n", file=file.nm2, cat, append=T), error=function(e) NA)
   if(length(nm.duplicated)!=0){
     tryCatch(sink.txt(paste0(paste(nm.duplicated,collapse=";"), "\n"), file=file.nm2, cat, append=T), error=function(e) NA)}else{

@@ -13,9 +13,7 @@ runQC_Phase1.2_report=function(dir.input, dir.output, select.all.cohorts=F, site
   dat.RaceByLocalCode=read.csv(paste0(dir.input,"/RaceByLocalCode-",site.nm,".csv"))
   dat.RaceBy4CECode=read.csv(paste0(dir.input,"/RaceBy4CECode-",site.nm,".csv"))
 
-  print(site.nm)
-
-  file.nm1 = paste0(dir.output, "/QC_report_phase1.2_", site.nm, "_",Sys.Date(),".txt")
+  file.nm1 = paste0(dir.output, "/QC_report_phase1.2_", site.nm, "_", Sys.Date(), ".txt")
 
   race.list.all = c('asian','black','no_information','other','white','american_indian','hawaiian_pacific_islander')
   cohort.cat = c('PosAdm','U071Adm','NegAdm','PosNotAdm','U071NotAdm','NegNotAdm')

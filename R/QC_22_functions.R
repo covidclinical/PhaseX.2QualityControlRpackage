@@ -105,11 +105,12 @@ run_qc_tab_frequency.phase2=function(file.nm2, phase2.Observations, phase1.AgeSe
 
 }
 
-############ frequency of the codes
+############ Inf, NA, NaN
 run_qc_na.phase2=function(phase2.ClinicalCourse, phase2.Observations, phase2.Summary, output.dir){
   x.na = which(is.na(phase2.ClinicalCourse) | is.infinite(rowSums(phase2.ClinicalCourse[,c(3,5:8)])))
 }
 
+############ truncation date is consistent
 
 
 

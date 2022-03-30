@@ -79,8 +79,8 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, select.al
   # if (is.na(phase2.Race)==TRUE){
   #   sink.txt("\n\nThe file LocalPatientRace.csv is missing",file=file.nm2, cat, append=T)
   # }
-  sink.txt("\n\nChecking for presence of NA, NaN, Inf in the data\n",file=file.nm2, cat, append=T)
-  Phase2QC_NA = run_qc_na.phase2(phase2.ClinicalCourse, phase2.Observations, phase2.Summary, output.dir)
+  #sink.txt("\n\nChecking for presence of NA, NaN, Inf in the data\n",file=file.nm2, cat, append=T)
+  #Phase2QC_NA = run_qc_na.phase2(phase2.ClinicalCourse, phase2.Observations, phase2.Summary, output.dir)
   sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm2, cat, append=T)
   Phase2QC_Tab_frequency = run_qc_tab_frequency.phase2(file.nm2, phase2.Observations, phase1.AgeSex, select.all.cohorts=TRUE, output.dir)
   sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm2, cat, append=T)
@@ -104,6 +104,10 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, select.al
     tryCatch(sink.txt(paste0('Cohort: ', cohort.nm, '\n\n'), file=file.nm2, cat, append=T), error=function(e) NA)
     sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
 
+    Phase2QC_Tab_Demographic=runQC_tab_dem(file.nm2, phase2.Summary.c, phase2.Observations.c, phase1.AgeSex.c, output.dir)
+    sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
+    #sink.txt(paste0("________________________________________________\n"), file=file.nm2, cat, append=T)
+
     Phase2QC_Tab_Labs=runQC_tab_lab(file.nm2, phase2.ClinicalCourse.c, phase2.Observations.c, phase1.Labs.c, output.dir)
     sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
     #sink.txt(paste0("________________________________________________\n"), file=file.nm2, cat, append=T)
@@ -113,10 +117,6 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, select.al
     #sink.txt(paste0("________________________________________________\n"), file=file.nm2,cat, append=T)
 
     Phase2QC_Tab_Diagnoses=runQC_tab_diag(file.nm2, phase2.ClinicalCourse.c, phase2.Observations.c, phase1.DiagProcMed.c, output.dir)
-    sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
-    #sink.txt(paste0("________________________________________________\n"), file=file.nm2, cat, append=T)
-
-    Phase2QC_Tab_Demographic=runQC_tab_dem(file.nm2, phase2.Summary.c, phase2.Observations.c, phase1.AgeSex.c, output.dir)
     sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
     #sink.txt(paste0("________________________________________________\n"), file=file.nm2, cat, append=T)
 

@@ -10,6 +10,7 @@
 #' @export
 runQC <- function(dir.input1.2, dir.input2.2=NA, dir.output, select.all.cohorts=F, site.nm){
 
+  print(site.nm)
   select.all.cohorts = F
   # QC for Phase1.2
   print("Generating Phase 1.2 QC report ...")
