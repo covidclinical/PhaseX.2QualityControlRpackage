@@ -17,14 +17,16 @@ This version of the package should NOT be run on Docker. Please run the followin
 ```{r, eval=FALSE}
 ### install the package
 devtools::install_github("https://github.com/covidclinical/PhaseX.2QualityControlRpackage", upgrade=FALSE)
+library(PhaseX.2QualityControlRpackage)
 
 ### enter input path, output path and site name
-dir.input1.2 = ""   # path that contains phase 1.2 data
-dir.input2.2 = ""   # path that contains phase 2.2 data, write NA if 2.2 data is not available
-dir.output = ""     # path to save the QC reports
-site.nm = ""        # 4CE site ID
+dir.input1.2 = ""       # path that contains phase 1.2 data
+dir.input2.2 = ""       # path that contains phase 2.2 data, write NA if 2.2 data is not available
+dir.output = ""         # path to save the QC reports
+select.all.cohorts = F  # equal F to display the report for a subset of cohorts
+site.nm = ""            # 4CE site ID
 
 ### run QC
-PhaseX.2QualityControlRpackage::runQC(dir.input1.2, dir.input2.2, dir.output, site.nm)
+runQC(dir.input1.2, dir.input2.2, dir.output, select.all.cohorts=F, site.nm)
 ```
 
