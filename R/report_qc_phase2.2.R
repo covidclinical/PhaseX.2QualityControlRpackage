@@ -62,8 +62,8 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, select.al
                                       unique(phase2.Observations$cohort),
                                       unique(phase2.Summary$cohort)))
                                       #unique(phase2.Race$cohort)))
-  cohort.all.PosAdm = cohort.all[which(substr(cohort.all,1,6)=='NegAdm')]
-  cohort.all.rest = cohort.all[which(substr(cohort.all,1,6)!='NegAdm')]
+  cohort.all.PosAdm = cohort.all[which(substr(cohort.all,1,6)=='PosAdm')]
+  cohort.all.rest = cohort.all[which(substr(cohort.all,1,6)!='PosAdm')]
 
   cohort.sample = tryCatch(c(sample(x=cohort.all.PosAdm, size =1), sample(x=cohort.all.rest, size=2, replace=F)), error=function(e) NA)
 
@@ -124,9 +124,9 @@ runQC_Phase2.2_report=function(dir.input1.2, dir.input2.2, dir.output, select.al
     #sink.txt(paste0("\n\n....................................................................................................\n\n"), file=file.nm2, cat, append=T)
     #sink.txt(paste0("________________________________________________\n"), file=file.nm2, cat, append=T)
 
-    Phase2QC_Tab_frequency=run_qc_tab_frequency.phase2(file.nm2,phase2.Observations.c, phase1.AgeSex.c, select.all.cohorts = FALSE, output.dir)
-    sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm2, cat, append=T)
-    #Phase2QC_Tab_Labs+Phase2QC_Tab_Medications+Phase2QC_Tab_Diagnoses+Phase2QC_Tab_Demographic+Phase2QC_Tab_ClinicalCourse
+    # Phase2QC_Tab_frequency=run_qc_tab_frequency.phase2(file.nm2,phase2.Observations.c, phase1.AgeSex.c, select.all.cohorts = FALSE, output.dir)
+    # sink.txt(paste0("\n\n________________________________________________________________________________________________\n\n"), file=file.nm2, cat, append=T)
+    # #Phase2QC_Tab_Labs+Phase2QC_Tab_Medications+Phase2QC_Tab_Diagnoses+Phase2QC_Tab_Demographic+Phase2QC_Tab_ClinicalCourse
 
   }
 }
